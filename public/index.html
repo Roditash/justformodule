@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NexaMobiliario | Portal de inventario</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand-box">
+          <div class="brand-mark">NX</div>
+          <div>
+            <h1>NexaMobiliario</h1>
+            <small>Control operativo</small>
+          </div>
+        </div>
+        <div id="userPanel" class="user-panel hidden">
+          <div>
+            <strong id="currentUserName">Usuario</strong>
+          </div>
+          <small id="currentUserRole">Rol</small>
+        </div>
+        <nav class="nav">
+          <button class="nav-btn active" data-target="dashboard-section">Dashboard</button>
+          <button class="nav-btn" data-target="inventory-section">Inventario</button>
+          <button class="nav-btn" data-target="reservations-section">Reservas</button>
+          <button class="nav-btn" data-target="loans-section">Préstamos</button>
+          <button class="nav-btn" data-target="payment-section">Pago demo</button>
+          <button class="nav-btn" data-target="history-section">Historial</button>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header class="portal-header">
+          <div>
+            <p class="eyebrow">Portal operativo</p>
+            <h2>Control inteligente del inventario</h2>
+          </div>
+          <div class="portal-actions">
+            <span id="liveBadge" class="live-badge">Sincronizado</span>
+            <button id="refreshBtn" class="secondary-btn">Actualizar</button>
+            <button id="logoutBtn" class="secondary-btn logout-btn">Cerrar sesión</button>
+          </div>
+        </header>
+        <div id="lastUpdated" class="last-updated">Sincronización pendiente</div>
+
+        <div class="operations-strip" aria-label="Resumen operativo">
+          <div class="ops-chip">
+            <span class="dot dot-green"></span>
+            Operación en tiempo real
+          </div>
+          <div class="ops-chip">
+            <span class="dot dot-blue"></span>
+            Disponibilidad actualizada
+          </div>
+          <div class="ops-chip">
+            <span class="dot dot-gold"></span>
+            Reservas y préstamos claros
+          </div>
+        </div>
+
+        <div class="content-banner">
+          <div class="banner-copy">
+            <small>Tu almacén, en orden</small>
+            <h3>Cada mesa y cada silla, siempre en su sitio.</h3>
+            <p>Consulta existencias y lleva el control de reservas y préstamos en una sola pantalla.</p>
+          </div>
+          <svg class="furniture-art" viewBox="0 0 280 150" role="img" aria-labelledby="furniture-art-title">
+            <title id="furniture-art-title">Ilustración pixel art de una mesa y dos sillas</title>
+            <path class="sprite-shadow" d="M30 128h220v10H30z" />
+            <path class="sprite-chair" d="M34 42h38v8H42v35h30v8H34zM38 93h8v28h-8zM66 93h8v28h-8z" />
+            <path class="sprite-chair-alt" d="M208 42h38v8h-30v35h30v8h-38zM210 93h8v28h-8zM238 93h8v28h-8z" />
+            <path class="sprite-table" d="M82 66h116v12H82zM92 78h10v42H92zM178 78h10v42h-10z" />
+            <path class="sprite-detail" d="M98 70h84v4H98zM124 88h32v4h-32zM49 55h8v20h-8zM221 55h8v20h-8z" />
+            <path class="sprite-spark" d="M124 27h8v8h-8zM140 19h8v8h-8zM156 27h8v8h-8zM140 35h8v8h-8z" />
+          </svg>
+        </div>
+
+        <section id="login-section" class="panel auth-panel">
+          <div class="auth-visual">
+            <div class="login-brand">
+              <div class="brand-mark large">NX</div>
+              <div>
+                <p class="eyebrow">NexaMobiliario</p>
+                <h2>Control visual de inventario</h2>
+              </div>
+            </div>
+
+            <div class="login-copy">
+              Gestiona mesas, sillas, reservas y préstamos con una experiencia clara, amable y muy fácil de operar.
+            </div>
+
+            <div class="feature-pills">
+              <span>Inventario</span>
+              <span>Reservas</span>
+              <span>Préstamos</span>
+              <span>Historial</span>
+            </div>
+
+            <div class="mini-feature-grid">
+              <div>
+                <strong>01</strong>
+                <small>Mesas</small>
+              </div>
+              <div>
+                <strong>02</strong>
+                <small>Sillas</small>
+              </div>
+              <div>
+                <strong>03</strong>
+                <small>Movimientos</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="auth-form-block">
+            <div class="auth-header-box">
+              <p class="eyebrow">Inicia sesión</p>
+              <h3>Accede al portal</h3>
+            </div>
+
+            <div class="auth-options" aria-label="Acceso rápido por perfil">
+              <button type="button" class="auth-option active" data-login-role="admin">
+                <span class="auth-dot auth-dot-admin"></span>
+                Administrador
+              </button>
+              <button type="button" class="auth-option" data-login-role="usuario">
+                <span class="auth-dot auth-dot-user"></span>
+                Operador
+              </button>
+              <button type="button" class="auth-option" data-login-role="demo">
+                <span class="auth-dot auth-dot-demo"></span>
+                Demo rápido
+              </button>
+            </div>
+
+            <form id="loginForm" class="login-form">
+              <label>
+                Usuario
+                <input type="text" id="username" value="admin" required />
+              </label>
+              <label>
+                Contraseña
+                <input type="password" id="password" value="admin123" required />
+              </label>
+              <div class="auth-meta">
+                <label class="remember-box">
+                  <input type="checkbox" checked />
+                  <span>Recordarme</span>
+                </label>
+                <a href="#" class="login-help">Necesito ayuda</a>
+              </div>
+              <button type="submit" class="primary-btn">Entrar</button>
+            </form>
+          </div>
+        </section>
+
+        <div id="app" class="hidden">
+          <section id="dashboard-section" class="panel active-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Resumen operativo</p>
+                <h2>Panel principal</h2>
+              </div>
+            </div>
+
+            <div class="dashboard-hero">
+              <div class="hero-copy">
+                <span class="pill">En línea</span>
+                <h3>Visión total del inventario y la operación</h3>
+                <p>Consulta disponibilidad, reservas activas y movimientos del día con una vista clara y elegante.</p>
+              </div>
+              <div class="hero-metrics">
+                <div class="mini-metric">
+                  <small>Disponibles</small>
+                  <strong id="heroAvailable">0</strong>
+                </div>
+                <div class="mini-metric">
+                  <small>Reservadas</small>
+                  <strong id="heroReserved">0</strong>
+                </div>
+                <div class="mini-metric">
+                  <small>Prestadas</small>
+                  <strong id="heroBorrowed">0</strong>
+                </div>
+              </div>
+            </div>
+
+            <div id="dashboardCards" class="stats-grid"></div>
+          </section>
+
+          <section id="inventory-section" class="panel hidden-panel">
+            <div class="section-header">
+              <h2>Inventario</h2>
+            </div>
+            <div class="two-columns">
+              <form id="resourceForm" class="card-form">
+                <h3>Registrar o actualizar recurso</h3>
+                <label>
+                  Tipo
+                  <select id="resourceType">
+                    <option value="mesa">Mesa</option>
+                    <option value="silla">Silla</option>
+                  </select>
+                </label>
+                <label>
+                  Cantidad total
+                  <input type="number" id="resourceQuantity" min="0" value="10" required />
+                </label>
+                <button type="submit" class="primary-btn">Guardar recurso</button>
+              </form>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <caption class="visually-hidden">Existencias de mesas y sillas</caption>
+                  <thead>
+                    <tr>
+                      <th>Recurso</th>
+                      <th>Total</th>
+                      <th>Disponibles</th>
+                      <th>Reservadas</th>
+                      <th>Prestadas</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resourceTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section id="reservations-section" class="panel hidden-panel">
+            <div class="section-header">
+              <h2>Reservas</h2>
+            </div>
+            <div class="two-columns">
+              <form id="reservationForm" class="card-form">
+                <h3>Nueva reserva</h3>
+                <label>
+                  Recurso
+                  <select id="reservationResource">
+                    <option value="mesa">Mesa</option>
+                    <option value="silla">Silla</option>
+                  </select>
+                </label>
+                <label>
+                  Cantidad
+                  <input type="number" id="reservationQuantity" min="1" value="1" required />
+                </label>
+                <label>
+                  Fecha
+                  <input type="date" id="reservationDate" required />
+                </label>
+                <label>
+                  Hora inicio
+                  <input type="time" id="reservationStart" />
+                </label>
+                <label>
+                  Hora fin
+                  <input type="time" id="reservationEnd" />
+                </label>
+                <label>
+                  Observaciones
+                  <textarea id="reservationObservations" rows="3"></textarea>
+                </label>
+                <button type="submit" class="primary-btn">Registrar reserva</button>
+              </form>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Usuario</th>
+                      <th>Recurso</th>
+                      <th>Cantidad</th>
+                      <th>Fecha</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reservationTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section id="loans-section" class="panel hidden-panel">
+            <div class="section-header">
+              <h2>Préstamos</h2>
+            </div>
+            <div class="two-columns">
+              <form id="loanForm" class="card-form">
+                <h3>Registrar préstamo</h3>
+                <label>
+                  Recurso
+                  <select id="loanResource">
+                    <option value="mesa">Mesa</option>
+                    <option value="silla">Silla</option>
+                  </select>
+                </label>
+                <label>
+                  Cantidad
+                  <input type="number" id="loanQuantity" min="1" value="1" required />
+                </label>
+                <label>
+                  Fecha préstamo
+                  <input type="date" id="loanDate" required />
+                </label>
+                <label>
+                  Fecha prevista devolución
+                  <input type="date" id="dueDate" required />
+                </label>
+                <label>
+                  Observaciones
+                  <textarea id="loanObservations" rows="3"></textarea>
+                </label>
+                <button type="submit" class="primary-btn">Registrar préstamo</button>
+              </form>
+
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Usuario</th>
+                      <th>Recurso</th>
+                      <th>Cantidad</th>
+                      <th>Fecha</th>
+                      <th>Estado</th>
+                      <th>Devolución</th>
+                    </tr>
+                  </thead>
+                  <tbody id="loanTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section id="payment-section" class="panel hidden-panel">
+            <div class="section-header">
+              <div>
+                <p class="eyebrow">Entorno de pruebas</p>
+                <h2>Demostración de pago con PayPal</h2>
+              </div>
+            </div>
+            <div class="payment-demo">
+              <div class="card-form">
+                <h3>Prueba PayPal Sandbox</h3>
+                <p class="payment-notice">
+                  Esta demostración usa exclusivamente PayPal Sandbox. Puedes aprobar una orden de prueba,
+                  pero el sistema nunca captura el pago ni cobra dinero real.
+                </p>
+                <label for="paypalAmount">
+                  Importe de prueba (USD)
+                  <input type="number" id="paypalAmount" min="0.01" max="1000" step="0.01" value="10.00" required />
+                </label>
+                <div id="paypalButtonContainer"></div>
+                <p id="paypalStatus" class="payment-status" role="status" aria-live="polite">
+                  Comprobando la configuración de PayPal Sandbox...
+                </p>
+              </div>
+              <aside class="payment-details">
+                <strong>Solo pruebas</strong>
+                <p>Necesitas una aplicación y una cuenta compradora de prueba de PayPal Developer.</p>
+                <p>Al aprobarse, la orden quedará sin capturar. No se guardan datos de pago en esta aplicación.</p>
+              </aside>
+            </div>
+          </section>
+
+          <section id="history-section" class="panel hidden-panel">
+            <div class="section-header">
+              <h2>Historial</h2>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <caption class="visually-hidden">Movimientos recientes del inventario</caption>
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Tipo</th>
+                    <th>Recurso</th>
+                    <th>Cantidad</th>
+                    <th>Estado anterior</th>
+                    <th>Estado posterior</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>
